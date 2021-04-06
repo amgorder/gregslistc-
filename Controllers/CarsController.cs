@@ -39,5 +39,45 @@ namespace gregslist.Controllers
             }
         }
         // .get("/:carId", this.GetCar)
+        [HttpGet("{carId}")]
+        public ActionResult<Car> GetCar(string carId)
+        {
+            try
+            {
+                Car carFound = FakeDB.Cars.Find(c => c.Id == carId);
+                if (carFound == null)
+                {
+                    throw new System.Exception("That's a NO GO ghostrider.");
+                }
+                return Ok(carFound);
+            }
+            catch (System.Exception err)
+            {
+
+                return BadRequest(err.Message);
+            }
+        }
+        [HttpDelete("{id}")]
+        public ActionResult<string> DeleteCar(string id)
+        {
+            try
+            {
+                Car carToRemove = FakeDB.Cars.Find(c => c.Id == id);
+                if (FakeDB.Cars.Remove(carToRemove))
+                {
+                    return Ok("Car Demolished");
+                }
+                else
+                {
+                    throw new System.Exception("That's a NO GO ghostrider.");
+                }
+            }
+            catch (System.Exception err)
+            {
+
+                return BadRequest(err.Message);
+
+            }
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace gregslist.Models
             Color = color;
             Price = price;
             Url = url;
+
         }
 
         public Car()
@@ -28,7 +29,7 @@ namespace gregslist.Models
         public string Url { get; set; }
 
 
-
+        public string Id { get; private set; } = Guid.NewGuid().ToString();
 
 
 
