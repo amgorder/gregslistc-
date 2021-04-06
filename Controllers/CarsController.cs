@@ -9,6 +9,7 @@ namespace gregslist.Controllers
     [Route("api/[controller]")]
     public class CarsController : ControllerBase
     {
+        //actionResult is a wrapper that handles the request status.
         [HttpGet]
         public ActionResult<IEnumerable<Car>> Get()
         {
@@ -22,7 +23,7 @@ namespace gregslist.Controllers
                 return BadRequest(err.Message);
             }
         }
-
+        //FROMBODY uses a parameterless class constructor to map data over from the request to the model.
         [HttpPost]
         public ActionResult<Car> Create([FromBody] Car newCar)
         {
@@ -37,5 +38,6 @@ namespace gregslist.Controllers
                 return BadRequest(err.Message);
             }
         }
+        // .get("/:carId", this.GetCar)
     }
 }
