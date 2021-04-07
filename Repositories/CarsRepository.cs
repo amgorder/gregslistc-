@@ -20,6 +20,11 @@ namespace gregslist.Repositories
             string sql = "SELECT * FROM cars;";
             return _db.Query<Car>(sql);
         }
+        internal Car Get(int id)
+        {
+            string sql = "SELECT * FROM cars WHERE id = @id;";
+            return _db.QueryFirstOrDefault<Car>(sql, new { id });
+        }
 
         internal Car Create(Car newCar)
         {
