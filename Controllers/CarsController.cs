@@ -79,5 +79,25 @@ namespace gregslist.Controllers
 
             }
         }
+        [HttpPut("{carId}")]
+        public ActionResult<Car> EditCar(string carId)
+        {
+            try
+            {
+                Car carFound = FakeDB.Cars.Find(c => c.Id == carId);
+                if (carFound == null)
+                {
+                    throw new System.Exception("That's a NO GO ghostrider.");
+                }
+                //return upate info without a new id?
+                //
+                return Ok(carFound);
+            }
+            catch (System.Exception err)
+            {
+
+                return BadRequest(err.Message);
+            }
+        }
     }
 }
