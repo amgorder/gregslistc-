@@ -21,15 +21,16 @@ namespace gregslist.Models
 
         }
 
+        [Required]
         public string Make { get; set; }
+        [Required]
         public string Model { get; set; }
-        public int Year { get; set; }
+        public int? Year { get; set; }
         public string Color { get; set; }
-        public decimal Price { get; set; }
+        [Range(0, 4)]
+        public decimal? Price { get; set; }
         public string Url { get; set; }
-
-
-        public string Id { get; private set; } = Guid.NewGuid().ToString();
+        public int Id { get; set; }
 
 
 

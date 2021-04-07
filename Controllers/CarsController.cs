@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using gregslist.Models;
 using gregslist.db;
+using gregslist.Services;
+using System;
+
 
 namespace gregslist.Controllers
 {
@@ -9,13 +12,19 @@ namespace gregslist.Controllers
     [Route("api/[controller]")]
     public class CarsController : ControllerBase
     {
+        private readonly CarsService _service;
+        public CarsController(CarsService service)
+        {
+            _service = service;
+        }
+
         //actionResult is a wrapper that handles the request status.
         [HttpGet]
         public ActionResult<IEnumerable<Car>> Get()
         {
             try
             {
-                return Ok(FakeDB.Cars);
+                return Ok(_service.Get());
             }
             catch (System.Exception err)
             {
@@ -29,74 +38,51 @@ namespace gregslist.Controllers
         {
             try
             {
-                FakeDB.Cars.Add(newCar);
-                return Ok(newCar);
+                return Ok(_service.Create(newCar));
             }
-            catch (System.Exception err)
+            catch (Exception e)
             {
 
-                return BadRequest(err.Message);
+                return BadRequest(e.Message);
             }
         }
-        // .get("/:carId", this.GetCar)
-        [HttpGet("{carId}")]
-        public ActionResult<Car> GetCar(string carId)
+        [HttpGet("{id}")] // GETBYID
+        public ActionResult<Car> Get(int id)
         {
             try
             {
-                Car carFound = FakeDB.Cars.Find(c => c.Id == carId);
-                if (carFound == null)
-                {
-                    throw new System.Exception("That's a NO GO ghostrider.");
-                }
-                return Ok(carFound);
+                return Ok(_service.Get(id));
             }
-            catch (System.Exception err)
+            catch (Exception e)
             {
-
-                return BadRequest(err.Message);
+                return BadRequest(e.Message);
             }
         }
-        [HttpDelete("{id}")]
-        public ActionResult<string> DeleteCar(string id)
+
+        [HttpPut("{id}")] // PUT
+        public ActionResult<Car> Edit([FromBody] Car editCar, int id)
         {
             try
             {
-                Car carToRemove = FakeDB.Cars.Find(c => c.Id == id);
-                if (FakeDB.Cars.Remove(carToRemove))
-                {
-                    return Ok("Car Demolished");
-                }
-                else
-                {
-                    throw new System.Exception("That's a NO GO ghostrider.");
-                }
+                editCar.Id = id;
+                return Ok(_service.Edit(editCar));
             }
-            catch (System.Exception err)
+            catch (Exception e)
             {
-
-                return BadRequest(err.Message);
-
+                return BadRequest(e.Message);
             }
         }
-        [HttpPut("{carId}")]
-        public ActionResult<Car> EditCar(string carId)
+
+        [HttpDelete("{id}")] // DELETE
+        public ActionResult<Car> Delete(int id)
         {
             try
             {
-                Car carFound = FakeDB.Cars.Find(c => c.Id == carId);
-                if (carFound == null)
-                {
-                    throw new System.Exception("That's a NO GO ghostrider.");
-                }
-                //return upate info without a new id?
-                //
-                return Ok(carFound);
+                return Ok(_service.Delete(id));
             }
-            catch (System.Exception err)
+            catch (Exception e)
             {
-
-                return BadRequest(err.Message);
+                return BadRequest(e.Message);
             }
         }
     }

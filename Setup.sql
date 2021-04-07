@@ -1,0 +1,12 @@
+USE aplaceforthings;
+-- CREATE TABLE cars
+-- (
+--   id INT AUTO_INCREMENT,
+--   make VARCHAR(255) NOT NULL UNIQUE,
+--   model VARCHAR(255) NOT NULL UNIQUE,
+--   year INT,
+--   description VARCHAR(255),
+--   price DECIMAL(6 , 2) NOT NULL,
+--   url VARCHAR(255) NOT NULL UNIQUE,
+--   PRIMARY KEY (id)
+-- );

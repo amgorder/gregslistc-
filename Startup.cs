@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using gregslist.Services;
+using gregslist.Repositories;
 
 namespace gregslist
 {
@@ -32,6 +34,25 @@ namespace gregslist
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "gregslist", Version = "v1" });
             });
+            //this section links the client (frontend)
+            services.AddCors(options =>
+                              {
+                                  options.AddPolicy("CorsDevPolicy", builder =>
+                           {
+                               builder
+                              .WithOrigins(new string[]{
+                            "http://localhost:8080",
+                            "http://localhost:8081"
+                                       })
+                              .AllowAnyMethod()
+                              .AllowAnyHeader()
+                              .AllowCredentials();
+                           });
+                              });
+            //end
+
+            services.AddTransient<CarsService>();
+            services.AddTransient<CarsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
